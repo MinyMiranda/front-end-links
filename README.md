@@ -1,24 +1,24 @@
-# link-front-end
+# Links e redirects
+Este projeto foi proposto como etapa para seleção para Desenvolvedor.
 
-## Project setup
-```
-npm install
-```
+# Sobre o projeto
+O projeto consiste em uma interface simples para consumo de uma api de cadastro de links e outros links relacionados para ser redirecionado.<br>
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+As ações possíveis no projeto são:
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- Criar links.
+- Visualizar todos os links. 
+- Editar links. 
+- Excluir links
+- Criar redirects.
+- Visualizar redirects relacionado ao link. 
+- Editar redirects. 
+- Excluir redirects.
+- Ao solicitar um link ser redirecionado a um dos seus links filhos
 
-### Lints and fixes files
-```
-npm run lint
-```
+# Tecnologias
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Para construção do projeto foi utilizado a seguinte tecnologia:
+- Vue/cli.
+<br>
+Após fazer a instalação do projeto é necessário configurar em services/api.js a url em que sua api se encontra.
