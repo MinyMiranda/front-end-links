@@ -63,6 +63,9 @@ export default {
       }
     },
     openModal() {
+      this.form.url = "";
+      this.form.count = "";
+      this.create = true;
       this.showModal = true;
     },
     closeModal() {
@@ -92,13 +95,13 @@ export default {
           errors = errors + "<br>" + dados[0];
         });
         this.$swal({ icon: "error", html: errors });
-        this.showModalLink = false;
+        this.showModal = false;
       }
     },
     async confirmEdit() {
       let formData = new FormData($("#form-link")[0]);
       try {
-        await api.put("/api/links/update/" + this.form.id, formData);
+        await api.post("/api/links/update", formData);
         this.$swal({
           icon: "success",
           timer: 3000,

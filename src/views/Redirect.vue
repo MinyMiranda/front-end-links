@@ -71,6 +71,9 @@ export default {
       }
     },
     openModal() {
+      this.form.url = "";
+      this.form.count = "";
+      this.create = true;
       this.showModal = true;
     },
     closeModal() {
@@ -107,7 +110,7 @@ export default {
     async confirmEdit() {
       let formData = new FormData($("#form-link")[0]);
       try {
-        await api.put("/api/redirects/update/" + this.form.id, formData);
+        await api.post("/api/redirects/update", formData);
         this.$swal({
           icon: "success",
           timer: 3000,

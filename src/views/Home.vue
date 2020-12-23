@@ -8,9 +8,9 @@
       <div class="row">
         <div class="col-6 col-md-4" v-for="(link, index) in listLinks" :key="link.id">
           <div class="card border-dark mb-3" style="max-width: 18rem">
-            <div class="card-header">{{ index }}</div>
+            <div class="card-header text-center">{{ index }}</div>
             <div class="card-body text-dark">
-              <h5 class="card-title" @click="redirectLink(link.url)">
+              <h5 class="card-title text-center" @click="redirectLink(link.url)">
                 {{ link.url }}
               </h5>
             </div>
