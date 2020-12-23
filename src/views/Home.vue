@@ -6,7 +6,7 @@
   <div class="container">
     <div class="col-12">
       <div class="row">
-        <div class="col-6 col-md-4" v-for="(link, index) in links" :key="link.id">
+        <div class="col-6 col-md-4" v-for="(link, index) in listLinks" :key="link.id">
           <div class="card border-dark mb-3" style="max-width: 18rem">
             <div class="card-header">{{ index }}</div>
             <div class="card-body text-dark">
@@ -18,20 +18,41 @@
         </div>
       </div>
     </div>
+    <nav aria-label="Page navigation example float-right">
+      <ul class="pagination justify-content-end">
+        <li class="page-item">
+          <a class="page-link" @click="paginationPrevious" tabindex="-1">Previous</a>
+        </li>
+        <div v-for="i in pages" :key="i">
+          <li class="page-item active" v-if="pageActual == i">
+            <a class="page-link" @click="pagination(i)">{{ i }}</a>
+          </li>
+          <li class="page-item" v-else>
+            <a class="page-link" @click="pagination(i)">{{ i }}</a>
+          </li>
+        </div>
+        <li class="page-item">
+          <a class="page-link" @click="paginationNext">Next</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script>
 import api from "../services/api";
-// import $ from "jquery";
 export default {
   data() {
     return {
       links: [],
+      limitItems: 10,
+      pageActual: 1,
+      pages: 0,
     };
   },
   mounted: async function () {
     await this.list();
+    this.pages = Math.ceil(this.links.length / this.limitItems);
   },
   methods: {
     async list() {
@@ -42,14 +63,40 @@ export default {
         console.error(error);
       }
     },
+    pagination(i) {
+      this.pageActual = i;
+    },
+    paginationPrevious() {
+      if (this.pageActual > 1) this.pageActual -= 1;
+    },
+    paginationNext() {
+      if (this.pageActual < this.pages) this.pageActual += 1;
+    },
     async redirectLink(url) {
       try {
         let { data } = await api.get("/" + url);
-        window.location.href = "http://www."+data;
+        window.location.href = "http://www." + data;
       } catch (error) {
-           this.$swal({ icon: "error", html: error.response.data.message });
+        this.$swal({ icon: "error", html: error.response.data.message });
         console.error(error);
       }
+    },
+  },
+  computed: {
+    listLinks: function () {
+      let result = [];
+      let totalPage = Math.ceil(this.links.length / this.limitItems);
+      let count = this.pageActual * this.limitItems - this.limitItems;
+      let delimiter = count + this.limitItems;
+      if (this.pageActual <= totalPage) {
+        for (let i = count; i < delimiter; i++) {
+          if (this.links[i] != null) {
+            result.push(this.links[i]);
+          }
+          count++;
+        }
+      }
+      return result;
     },
   },
 };
@@ -70,7 +117,7 @@ export default {
 .font-12 {
   font-size: 14px !important;
 }
-.card-body{
+.card-body {
   cursor: pointer;
 }
 h3 {

@@ -9,7 +9,9 @@
       </ul>
     </div>
   </nav>
-  <router-view />
+  <div style="min-height:500px">
+  <router-view/>
+  </div>
   <footer class="bg-dark text-white text-center text-lg-start">
     <div class="container">
       <div class="row">

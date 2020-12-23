@@ -8,8 +8,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(link, index) in links" :key="link.id">
-        <td class="text-center">{{ index }}</td>
+      <tr v-for="(link, index) in listLinks" :key="link.id">
+        <td class="text-center">{{ index + 1 }}</td>
         <td class="text-center">{{ link.url }}</td>
         <td class="text-center">
           <button
@@ -71,6 +71,24 @@
       </tr>
     </tbody>
   </table>
+  <nav aria-label="Page navigation example float-right">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a class="page-link" @click="paginationPrevious" tabindex="-1">Previous</a>
+      </li>
+      <div v-for="i in pages" :key="i">
+        <li class="page-item active" v-if="pageActual == i">
+          <a class="page-link" @click="pagination(i)">{{ i }}</a>
+        </li>
+        <li class="page-item" v-else>
+          <a class="page-link" @click="pagination(i)">{{ i }}</a>
+        </li>
+      </div>
+      <li class="page-item">
+        <a class="page-link" @click="paginationNext">Next</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
@@ -80,7 +98,26 @@ export default {
     links: Array,
     linkFather: Boolean,
   },
+  data: function () {
+    return {
+      limitItems: 10,
+      pageActual: 1,
+      pages: 0,
+    };
+  },
+  mounted: function () {
+    this.pages = Math.ceil(this.links.length / this.limitItems);
+  },
   methods: {
+    pagination(i) {
+      this.pageActual = i;
+    },
+    paginationPrevious() {
+      if (this.pageActual > 1) this.pageActual -= 1;
+    },
+    paginationNext() {
+      if (this.pageActual < this.pages) this.pageActual += 1;
+    },
     sendDeleteToIndex(index) {
       this.$emit("event-table-delete", index);
     },
@@ -89,6 +126,23 @@ export default {
     },
     goLink(id) {
       this.$router.push("/redirects?" + id);
+    },
+  },
+  computed: {
+    listLinks: function () {
+      let result = [];
+      let totalPage = Math.ceil(this.links.length / this.limitItems);
+      let count = this.pageActual * this.limitItems - this.limitItems;
+      let delimiter = count + this.limitItems;
+      if (this.pageActual <= totalPage) {
+        for (let i = count; i < delimiter; i++) {
+          if (this.links[i] != null) {
+            result.push(this.links[i]);
+          }
+          count++;
+        }
+      }
+      return result;
     },
   },
 };
@@ -107,7 +161,10 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-a {
+/* a {
   color: #42b983;
+} */
+.page-item {
+  cursor: pointer;
 }
 </style>

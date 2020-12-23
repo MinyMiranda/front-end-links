@@ -105,7 +105,7 @@ export default {
           title: "Link editado com sucesso!",
           showConfirmButton: false,
         });
-        this.showModalLink = false;
+        this.showModal = false;
         this.list();
       } catch (error) {
         let errors = "";
@@ -113,7 +113,7 @@ export default {
           errors = errors + "<br>" + dados[0];
         });
         this.$swal({ icon: "error", html: errors });
-        this.showModalLink = false;
+        this.showModal = false;
       }
     },
     showDeleteSwal(id) {
@@ -183,5 +183,4 @@ export default {
   display: table-cell;
   vertical-align: middle;
 }
-
 </style>
